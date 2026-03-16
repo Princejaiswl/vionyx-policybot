@@ -249,22 +249,26 @@ st.divider()
 
 
 # -----------------------------
-# Help Request
+# SIDEBAR HELP REQUEST
 # -----------------------------
 
-st.subheader("🆘 Need Help?")
+st.sidebar.title("? 🆘 Need Help?")
 
-st.write("If PolicyBot cannot resolve your issue, contact the support team.")
+st.sidebar.write(
+"If PolicyBot cannot resolve your issue, send a request to the Vionyx support team."
+)
 
-name = st.text_input("Employee Name")
+name = st.sidebar.text_input("Employee Name")
 
-issue = st.text_area(
+issue = st.sidebar.text_area(
     "Describe your issue",
     placeholder="Example: Cannot access HR portal"
 )
 
-if st.button("Send Request"):
+send = st.sidebar.button("Send Request")
+
+if send:
 
     result = send_help_request(name, issue)
 
-    st.success(result)
+    st.sidebar.success(result)
