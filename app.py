@@ -201,7 +201,7 @@ st.set_page_config(
 )
 
 # Header
-st.title("🤖 Vionyx PolicyBot")
+st.title("🤖 Vionyx Technologies PolicyBot")
 st.caption("Enterprise Policy Assistant for Vionyx Technologies")
 
 st.divider()
