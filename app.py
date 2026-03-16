@@ -189,7 +189,7 @@ Issue Description:
 
 
 # -----------------------------
-# STREAMLIT UI
+# STREAMLIT CHAT UI
 # -----------------------------
 
 import streamlit as st
@@ -204,60 +204,66 @@ st.set_page_config(
 st.title("🤖 Vionyx PolicyBot")
 st.caption("Enterprise Policy Assistant for Vionyx Technologies")
 
-st.write("")
+st.divider()
+
+# Chat history storage
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display chat history
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.write(msg["content"])
+
+# Chat input (ENTER to send)
+prompt = st.chat_input("Ask about company policies...")
+
+if prompt:
+
+    # show user message
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    with st.chat_message("user"):
+        st.write(prompt)
+
+    # generate response
+    with st.chat_message("assistant"):
+
+        with st.spinner("Searching policies..."):
+
+            answer, sources = agent(prompt)
+
+        st.write(answer)
+
+        if sources:
+            st.markdown("**Sources**")
+            for s in sources:
+                st.write("•", s)
+
+    st.session_state.messages.append(
+        {"role": "assistant", "content": answer}
+    )
+
+
+st.divider()
+
 
 # -----------------------------
-# Ask Question Section
+# Help Request
 # -----------------------------
 
-st.markdown("### 💬 Ask PolicyBot")
+st.subheader("🆘 Need Help?")
 
-question = st.text_input(
-    "Ask about company policies",
-    placeholder="Example: How many sick leaves are allowed?"
-)
-
-ask = st.button("Ask PolicyBot")
-
-if ask and question:
-
-    with st.spinner("Searching company policies..."):
-
-        answer, sources = agent(question)
-
-    st.write("")
-    st.markdown("### 🤖 PolicyBot Answer")
-
-    st.success(answer)
-
-    if sources:
-
-        st.markdown("### 📄 Sources")
-
-        for s in sources:
-            st.write("•", s)
-
-st.write("")
-st.write("---")
-
-# -----------------------------
-# Help Request Section
-# -----------------------------
-
-st.markdown("### 🆘 Need Help?")
-
-st.write("If PolicyBot cannot resolve your issue, send a request to the support team.")
+st.write("If PolicyBot cannot resolve your issue, contact the support team.")
 
 name = st.text_input("Employee Name")
 
 issue = st.text_area(
     "Describe your issue",
-    placeholder="Example: I cannot access the HR portal"
+    placeholder="Example: Cannot access HR portal"
 )
 
-send = st.button("Send Help Request")
-
-if send:
+if st.button("Send Request"):
 
     result = send_help_request(name, issue)
 
