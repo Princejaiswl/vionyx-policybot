@@ -153,7 +153,7 @@ Answer briefly.
 def send_help_request(name, issue):
 
     sender_email = "rjking1577@gmail.com"
-    sender_password = "YOUR_APP_PASSWORD"
+    sender_password = "igfv zmaz dpqa yeqw"
 
     receiver_email = "rajajaiswal1577@gmail.com"
 
