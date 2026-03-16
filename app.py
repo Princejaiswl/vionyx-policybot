@@ -192,50 +192,73 @@ Issue Description:
 # STREAMLIT UI
 # -----------------------------
 
-st.set_page_config(page_title="Vionyx PolicyBot", layout="wide")
+import streamlit as st
 
+st.set_page_config(
+    page_title="Vionyx PolicyBot",
+    page_icon="🤖",
+    layout="centered"
+)
+
+# Header
 st.title("🤖 Vionyx PolicyBot")
-st.write("Enterprise Policy Assistant for Vionyx Technologies")
+st.caption("Enterprise Policy Assistant for Vionyx Technologies")
 
+st.write("")
 
-# Chat Section
+# -----------------------------
+# Ask Question Section
+# -----------------------------
 
-st.subheader("💬 Ask your question")
+st.markdown("### 💬 Ask PolicyBot")
 
 question = st.text_input(
     "Ask about company policies",
     placeholder="Example: How many sick leaves are allowed?"
 )
 
-if question:
+ask = st.button("Ask PolicyBot")
 
-    answer, sources = agent(question)
+if ask and question:
 
-    st.write("### 🤖 PolicyBot Response")
+    with st.spinner("Searching company policies..."):
+
+        answer, sources = agent(question)
+
+    st.write("")
+    st.markdown("### 🤖 PolicyBot Answer")
 
     st.success(answer)
 
     if sources:
 
-        st.write("### 📄 Sources")
+        st.markdown("### 📄 Sources")
 
         for s in sources:
-            st.write("-", s)
+            st.write("•", s)
 
+st.write("")
+st.write("---")
 
-st.divider()
-
-
+# -----------------------------
 # Help Request Section
+# -----------------------------
 
-with st.expander("🆘 Raise Help Request"):
+st.markdown("### 🆘 Need Help?")
 
-    name = st.text_input("Employee Name")
+st.write("If PolicyBot cannot resolve your issue, send a request to the support team.")
 
-    issue = st.text_area("Describe your issue")
+name = st.text_input("Employee Name")
 
-    if st.button("Send Request"):
+issue = st.text_area(
+    "Describe your issue",
+    placeholder="Example: I cannot access the HR portal"
+)
 
-        result = send_help_request(name, issue)
+send = st.button("Send Help Request")
 
-        st.success(result)
+if send:
+
+    result = send_help_request(name, issue)
+
+    st.success(result)
